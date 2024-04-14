@@ -1,8 +1,10 @@
-import { FC, useState } from 'react';
-import { getUsers } from './requests/request';
+import { FC, useEffect, useState } from 'react';
+import { createUser, getUsers } from './requests/request';
+import { getComments } from './requests/getComments';
+import { result } from './requests/requests';
 
 export interface IUser {
-  id: number;
+  id?: number;
   title: string;
   name: string;
 }
@@ -13,11 +15,21 @@ export const App: FC = () => {
   const fetchData = async () => {
     try {
       const usersData = await getUsers();
+      console.log(usersData);
       setUsers(usersData);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
   };
+
+  useEffect(() => {
+    getComments();
+    createUser();
+    getUsers();
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    result;
+  }, []);
+
   return (
     <div>
       <ul>

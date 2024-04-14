@@ -1,15 +1,21 @@
 import axios from 'axios';
 import { IUser } from '../App';
 
-const FIRST_API_URL = 'https://jsonplaceholder.typicode.com';
+export const FIRST_API_URL = 'https://jsonplaceholder.typicode.com';
 
 export const getUsers = async (): Promise<IUser[]> => {
   try {
     const response = await axios({
       url: `${FIRST_API_URL}/users`,
       method: 'GET',
+      timeout: 2000,
       params: { offset: 0, limit: 5 },
+      onDownloadProgress: (ProgressEvent) => {
+        console.log(ProgressEvent, 'first');
+      },
     });
+    console.log(response.data);
+    console.log(response.status === 404 ? 'Error 404' : 'Success');
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -19,4 +25,17 @@ export const getUsers = async (): Promise<IUser[]> => {
     }
     throw error;
   }
+};
+
+let userId = 10;
+
+export const createUser = () => {
+  const response = axios
+    .post(`${FIRST_API_URL}/users`, {
+      id: userId++,
+      firstName: 'Roman',
+      lastName: 'Chaban',
+    })
+    .then((res) => console.log(res));
+  return response;
 };
