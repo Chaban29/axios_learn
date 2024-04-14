@@ -10,12 +10,8 @@ export const getUsers = async (): Promise<IUser[]> => {
       method: 'GET',
       timeout: 2000,
       params: { offset: 0, limit: 5 },
-      onDownloadProgress: (ProgressEvent) => {
-        console.log(ProgressEvent, 'first');
-      },
     });
-    console.log(response.data);
-    console.log(response.status === 404 ? 'Error 404' : 'Success');
+
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

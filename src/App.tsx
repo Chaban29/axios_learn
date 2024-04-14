@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { createUser, getUsers } from './requests/request';
-import { getComments } from './requests/getComments';
-import { result } from './requests/requests';
+import { getUsers } from './requests/request';
+import axios from 'axios';
 
 export interface IUser {
   id?: number;
@@ -23,11 +22,14 @@ export const App: FC = () => {
   };
 
   useEffect(() => {
-    getComments();
-    createUser();
-    getUsers();
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    result;
+    axios
+      .head('https://jsonplaceholder.tyxpicode.com/users')
+      .then((res) => console.log(res))
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log(error.message + ': 404');
+        }
+      });
   }, []);
 
   return (
